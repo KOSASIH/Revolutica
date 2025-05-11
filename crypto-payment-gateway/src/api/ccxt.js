@@ -6,6 +6,7 @@ const { generateTransactionId } = require('./quantum.js');
 const { optimizeExchange, detectFraudAdvanced } = require('./ai.js');
 const { encryptData } = require('../utils/encryption.js');
 const { allocateFee } = require('../utils/balancer.js');
+const { processPiPayment } = require('./pi.js');
 
 // Load environment variables
 const CCXT_API_KEY = process.env.CCXT_API_KEY;
@@ -26,6 +27,8 @@ const requiredEnv = [
   'POLYGON_NODE_URL',
   'TREASURY_ADDRESS',
   'PRIVATE_KEY',
+  'PI_API_KEY',
+  'PI_WALLET_PRIVATE_SEED',
 ];
 for (const env of requiredEnv) {
   if (!process.env[env]) {
@@ -72,18 +75,28 @@ async function log(message) {
 // Fetch price quote for a cryptocurrency
 async function getPriceQuote(crypto, fiat = 'USD') {
   try {
+    // Skip price quote for Pi Network (handled by pi.js)
+    if (crypto === 'PI') {
+      return { price: 1, exchange: 'pi_network' }; // Pi Coin price is managed by Pi Network
+    }
+
     const symbol = `${crypto}/${fiat}`;
     const exchangesData = await Promise.all(
       Object.entries(exchanges).map(async ([name, exchange]) => {
         if (exchange.has['fetchTicker']) {
-          const ticker = await exchange.fetchTicker(symbol);
-          return {
-            name,
-            price: ticker.last,
-            feeRate: ticker.fee || 0.001,
-            liquidity: ticker.quoteVolume || 1000000,
-            volatility: ticker.percentage || 0.05,
-          };
+          try {
+            const ticker = await exchange.fetchTicker(symbol);
+            return {
+              name,
+              price: ticker.last,
+              feeRate: ticker.fee || 0.001,
+              liquidity: ticker.quoteVolume || 1000000,
+              volatility: ticker.percentage || 0.05,
+            };
+          } catch (err) {
+            await log(`Failed to fetch ticker from ${name} for ${symbol}: ${err.message}`);
+            return null;
+          }
         }
         return null;
       })
@@ -94,7 +107,7 @@ async function getPriceQuote(crypto, fiat = 'USD') {
     }
 
     // Use AI to select optimal exchange
-    const { exchange: bestExchange } = await optimizeExchange(0, 1, crypto, exchangesData); // Order ID 0 for price fetch
+    const { exchange: bestExchange } = await optimizeExchange(0, 1, crypto, exchangesData);
     const bestExchangeData = exchangesData.find(data => data.name === bestExchange);
 
     await log(`Fetched price from ${bestExchange}: ${crypto}/${fiat} = ${bestExchangeData.price}`);
@@ -114,7 +127,7 @@ async function generatePaymentAddress(crypto, orderId, exchangeName = 'binance')
     }
 
     const address = await exchange.createDepositAddress(crypto);
-    const encryptedAddress = await encryptData(address.address); // Encrypt address
+    const encryptedAddress = await encryptData(address.address);
     await log(`Generated payment address for order ${orderId}: ${crypto} - ${address.address} (encrypted)`);
 
     return {
@@ -130,9 +143,17 @@ async function generatePaymentAddress(crypto, orderId, exchangeName = 'binance')
   }
 }
 
-// Process payment (off-chain or on-chain)
-async function processPayment(orderId, amount, crypto, chain = 'ethereum') {
+// Process payment (off-chain, on-chain, or Pi Network)
+async function processPayment(orderId, amount, crypto, chain = 'ethereum', userUid = null) {
   try {
+    // Validate inputs
+    if (!orderId || !amount || !crypto) {
+      throw new Error('Missing required parameters: orderId, amount, crypto');
+    }
+    if (crypto === 'PI' && !userUid) {
+      throw new Error('Pi Network payments require a userUid');
+    }
+
     // Generate quantum transaction ID
     const transactionId = await generateTransactionId(orderId);
     await log(`Generated quantum transaction ID for order ${orderId}: ${transactionId}`);
@@ -143,17 +164,41 @@ async function processPayment(orderId, amount, crypto, chain = 'ethereum') {
       amount: parseFloat(amount),
       crypto,
       timestamp: Date.now(),
-      walletAddress: account.address,
+      walletAddress: crypto === 'PI' ? null : account.address,
     };
     const fraudResult = await detectFraudAdvanced(transactionData);
     if (fraudResult.isFraudulent) {
       throw new Error(`Fraud detected: Score ${fraudResult.fraudScore}`);
     }
 
-    // Fetch price quote
+    // Handle Pi Network payments
+    if (crypto === 'PI') {
+      const piResult = await processPiPayment(orderId, amount, userUid);
+      if (piResult.status !== 'SUCCESS') {
+        throw new Error(`Pi payment failed: ${piResult.error}`);
+      }
+      const encryptedAmount = await encryptData(piResult.amount);
+      return {
+        status: 'SUCCESS',
+        transactionId,
+        paymentInfo: {
+          paymentId: piResult.paymentId,
+          txid: piResult.txid,
+          network: piResult.network,
+        },
+        cryptoAmount: piResult.amount,
+        encryptedAmount,
+        exchange: null,
+        onChainTx: piResult.txid,
+        feeAllocated: 0, // Pi payments handle fees differently
+        treasuryTxHash: null,
+      };
+    }
+
+    // Fetch price quote for other cryptocurrencies
     const { price, exchange } = await getPriceQuote(crypto);
     const cryptoAmount = amount / price;
-    const encryptedAmount = await encryptData(cryptoAmount); // Encrypt amount
+    const encryptedAmount = await encryptData(cryptoAmount);
     await log(`Calculated crypto amount for order ${orderId}: ${cryptoAmount} ${crypto} (encrypted)`);
 
     // Off-chain payment
@@ -163,7 +208,7 @@ async function processPayment(orderId, amount, crypto, chain = 'ethereum') {
     let onChainTx = null;
     if (['USDC', 'ETH'].includes(crypto)) {
       const web3 = web3Providers[chain];
-      const contractAddress = process.env[`${chain.toUpperCase()}_CONTRACT_ADDRESS`]; // e.g., ETHEREUM_CONTRACT_ADDRESS
+      const contractAddress = process.env[`${chain.toUpperCase()}_CONTRACT_ADDRESS`];
       if (!contractAddress) {
         throw new Error(`Contract address missing for ${chain}`);
       }
@@ -215,6 +260,11 @@ async function processPayment(orderId, amount, crypto, chain = 'ethereum') {
 // Convert payment to fiat/stablecoin
 async function convertToFiat(orderId, cryptoAmount, crypto, fiat = 'USDC', exchangeName = 'binance') {
   try {
+    if (crypto === 'PI') {
+      await log(`Fiat conversion skipped for Pi Network for order ${orderId}`);
+      return { status: 'SUCCESS', order: null, encryptedOrderId: null };
+    }
+
     const exchange = exchanges[exchangeName];
     const symbol = `${crypto}/${fiat}`;
     if (!exchange.has['createMarketSellOrder']) {
@@ -222,7 +272,7 @@ async function convertToFiat(orderId, cryptoAmount, crypto, fiat = 'USDC', excha
     }
 
     const order = await exchange.createMarketSellOrder(symbol, cryptoAmount);
-    const encryptedOrderId = await encryptData(order.id); // Encrypt order ID
+    const encryptedOrderId = await encryptData(order.id);
     await log(`Converted ${cryptoAmount} ${crypto} to ${fiat} for order ${orderId}: Order ${order.id} (encrypted)`);
 
     return { status: 'SUCCESS', order, encryptedOrderId };
@@ -233,30 +283,30 @@ async function convertToFiat(orderId, cryptoAmount, crypto, fiat = 'USDC', excha
 }
 
 // Main function to handle payment requests
-async function main(orderId, amount, crypto, chain = 'ethereum') {
+async function main(orderId, amount, crypto, chain = 'ethereum', userUid = null) {
   try {
-    const result = await processPayment(orderId, amount, crypto, chain);
-    if (result.status === 'SUCCESS') {
-      // Optionally convert to stablecoin
+    const result = await processPayment(orderId, amount, crypto, chain, userUid);
+    if (result.status === 'SUCCESS' && crypto !== 'PI') {
       const conversion = await convertToFiat(orderId, result.cryptoAmount, crypto, 'USDC', result.exchange);
-      console.log(JSON.stringify({ ...result, conversion }));
-    } else {
-      console.log(JSON.stringify(result));
+      return { ...result, conversion };
     }
+    return result;
   } catch (error) {
     await log(`Main process failed: ${error.message}`);
-    console.log(JSON.stringify({ status: 'FAILURE', error: error.message }));
+    return { status: 'FAILURE', error: error.message };
   }
 }
 
 // Command-line interface for PHP integration
 if (require.main === module) {
-  const [,, orderId, amount, crypto, chain = 'ethereum'] = process.argv;
-  if (!orderId || !amount || !crypto) {
-    console.error('Usage: node ccxt.js <orderId> <amount> <crypto> [chain]');
+  const [,, orderId, amount, crypto, chain = 'ethereum', userUid] = process.argv;
+  if (!orderId || !amount || !crypto || (crypto === 'PI' && !userUid)) {
+    console.error('Usage: node ccxt.js <orderId> <amount> <crypto> [chain] [userUid]');
     process.exit(1);
   }
-  main(orderId, parseFloat(amount), crypto, chain);
+  main(orderId, parseFloat(amount), crypto, chain, userUid).then(result => {
+    console.log(JSON.stringify(result));
+  });
 }
 
-module.exports = { getPriceQuote, generatePaymentAddress, processPayment, convertToFiat };
+module.exports = { getPriceQuote, generatePaymentAddress, processPayment, convertToFiat, main };
