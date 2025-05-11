@@ -1,0 +1,35 @@
+{
+  "name": "quantum-pay-gateway",
+  "version": "1.0.0",
+  "description": "Ultra high-tech WooCommerce plugin for crypto payments with quantum and AI features",
+  "main": "src/api/ccxt.js",
+  "scripts": {
+    "start": "node src/api/ccxt.js",
+    "deploy": "npx hardhat run src/blockchain/scripts/deploy.js --network sepolia",
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "frontend": "cd src/frontend/react && npm start",
+    "audit": "npm audit"
+  },
+  "keywords": ["crypto", "woocommerce", "quantum", "ai", "blockchain"],
+  "author": "KOSASIH",
+  "license": "MIT",
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@openzeppelin/contracts": "^5.0.2",
+    "ccxt": "^4.4.36",
+    "dotenv": "^16.4.5",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.22.4",
+    "microsoft-seal": "^4.1.0",
+    "tensorflow": "^2.16.1",
+    "web3": "^4.5.0"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "mocha": "^10.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
