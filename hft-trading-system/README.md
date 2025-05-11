@@ -16,15 +16,23 @@ A high-frequency trading (HFT) system built with [CCXT](https://github.com/ccxt/
 
 ```
 hft-trading-system/
-├── .env                # Environment variables (API keys)
-├── .gitignore          # Git ignore file
-├── package.json        # Dependencies and scripts
-├── package-lock.json   # Dependency lock file
+├── .env
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── contracts/
+│   ├── PiCoinContracts.sol
+├── artifacts/ (auto-generated)
+├── cache/ (auto-generated)
+├── scripts/
+│   ├── deploy.js
 ├── src/
-│   ├── index.js        # Main entry point
-│   ├── websocketClient.js # WebSocket streaming logic
-│   ├── tradingStrategy.js # Trading strategy and order execution
-└── README.md           # Project documentation
+│   ├── index.js
+│   ├── websocketClient.js
+│   ├── tradingStrategy.js
+│   ├── autoListing.js
+├── hardhat.config.js
+└── README.md
 ```
 
 ## Prerequisites
