@@ -1,35 +1,67 @@
 {
   "name": "quantum-pay-gateway",
-  "version": "1.0.0",
-  "description": "Ultra high-tech WooCommerce plugin for crypto payments with quantum and AI features",
+  "version": "2.0.0",
+  "description": "Ultra high-tech WooCommerce plugin for crypto payments with quantum RNG, AI optimization, homomorphic encryption, and multi-chain economic balancing",
   "main": "src/api/ccxt.js",
   "scripts": {
     "start": "node src/api/ccxt.js",
-    "deploy": "npx hardhat run src/blockchain/scripts/deploy.js --network sepolia",
+    "start:coinbase": "node src/api/coinbase.js",
+    "start:quantum": "node src/api/quantum.js",
+    "start:ai": "node src/api/ai.js",
+    "start:encryption": "node src/utils/encryption.js",
+    "start:balancer": "node src/utils/balancer.js",
+    "deploy:ethereum": "npx hardhat run src/blockchain/scripts/deploy.js --network sepolia",
+    "deploy:bnb": "npx hardhat run src/blockchain/scripts/deploy.js --network bnbTestnet",
+    "deploy:polygon": "npx hardhat run src/blockchain/scripts/deploy.js --network polygonAmoy",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "frontend": "cd src/frontend/react && npm start",
-    "audit": "npm audit"
+    "audit": "npm audit",
+    "lint": "eslint src/",
+    "format": "prettier --write src/"
   },
-  "keywords": ["crypto", "woocommerce", "quantum", "ai", "blockchain"],
+  "keywords": [
+    "crypto",
+    "woocommerce",
+    "quantum",
+    "ai",
+    "blockchain",
+    "homomorphic-encryption",
+    "multi-chain",
+    "economic-balancer"
+  ],
   "author": "KOSASIH",
   "license": "MIT",
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^5.0.2",
+    "@tensorflow/tfjs-node": "^4.10.0",
     "ccxt": "^4.4.36",
     "dotenv": "^16.4.5",
     "ethers": "^5.7.2",
     "hardhat": "^2.22.4",
-    "microsoft-seal": "^4.1.0",
-    "tensorflow": "^2.16.1",
+    "node-fetch": "^2.6.7",
+    "node-seal": "^4.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "web3": "^4.5.0"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-etherscan": "^3.1.8",
-    "mocha": "^10.2.0"
+    "eslint": "^8.57.0",
+    "mocha": "^10.2.0",
+    "prettier": "^3.3.3"
   },
   "engines": {
-    "node": ">=14.0.0"
-  }
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KOSASIH/Revolutica.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KOSASIH/Revolutica/issues"
+  },
+  "homepage": "https://github.com/KOSASIH/Revolutica#readme"
 }
