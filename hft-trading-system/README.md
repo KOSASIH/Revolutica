@@ -21,7 +21,6 @@ hft-trading-system/
 ├── package.json
 ├── package-lock.json
 ├── contracts/
-│   ├── PiCoinContracts.sol
 ├── artifacts/ (auto-generated)
 ├── cache/ (auto-generated)
 ├── scripts/
