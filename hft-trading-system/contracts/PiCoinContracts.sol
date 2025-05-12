@@ -8,6 +8,7 @@ contract StableCoin {
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
+    address public owner;
 
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
@@ -15,8 +16,9 @@ contract StableCoin {
     event Burn(address indexed from, uint256 value);
 
     constructor() {
+        owner = msg.sender; // Set the contract creator as the owner
         totalSupply = 100000000000 * 10 ** uint256(decimals); // Total supply set to 100 billion
-        balanceOf[msg.sender] = totalSupply; // Assign total supply to the contract creator
+        balanceOf[owner] = totalSupply; // Assign total supply to the contract creator
     }
 
     function transfer(address to, uint256 value) public returns (bool success) {
@@ -68,6 +70,7 @@ contract LiquidityPool {
     event LiquidityRemoved(address indexed provider, uint256 amount);
 
     function addLiquidity(uint256 amount) public {
+        require(amount > 0, "Amount must be greater than zero");
         liquidity[msg.sender] += amount;
         emit LiquidityAdded(msg.sender, amount);
     }
@@ -119,11 +122,13 @@ contract Governance {
     }
 
     function addAdmin(address admin) public onlyOwner {
+        require(!isAdmin[admin], "Admin already exists");
         isAdmin[admin] = true;
         emit AdminAdded(admin);
     }
 
     function removeAdmin(address admin) public onlyOwner {
+        require(isAdmin[admin], "Admin does not exist");
         isAdmin[admin] = false;
         emit AdminRemoved(admin);
     }
