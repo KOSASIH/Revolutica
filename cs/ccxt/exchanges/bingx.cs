@@ -754,64 +754,43 @@ public partial class bingx : Exchange
             object name = this.safeString(entry, "name");
             object networkList = this.safeList(entry, "networkList");
             object networks = new Dictionary<string, object>() {};
-            object fee = null;
-            object depositEnabled = false;
-            object withdrawEnabled = false;
-            object defaultLimits = new Dictionary<string, object>() {};
             for (object j = 0; isLessThan(j, getArrayLength(networkList)); postFixIncrement(ref j))
             {
                 object rawNetwork = getValue(networkList, j);
                 object network = this.safeString(rawNetwork, "network");
                 object networkCode = this.networkIdToCode(network);
-                object isDefault = this.safeBool(rawNetwork, "isDefault");
-                object networkDepositEnabled = this.safeBool(rawNetwork, "depositEnable");
-                if (isTrue(networkDepositEnabled))
-                {
-                    depositEnabled = true;
-                }
-                object networkWithdrawEnabled = this.safeBool(rawNetwork, "withdrawEnable");
-                if (isTrue(networkWithdrawEnabled))
-                {
-                    withdrawEnabled = true;
-                }
                 object limits = new Dictionary<string, object>() {
                     { "withdraw", new Dictionary<string, object>() {
                         { "min", this.safeNumber(rawNetwork, "withdrawMin") },
                         { "max", this.safeNumber(rawNetwork, "withdrawMax") },
                     } },
                 };
-                fee = this.safeNumber(rawNetwork, "withdrawFee");
-                if (isTrue(isDefault))
-                {
-                    defaultLimits = limits;
-                }
-                object precision = this.safeNumber(rawNetwork, "withdrawPrecision");
-                object networkActive = isTrue(networkDepositEnabled) || isTrue(networkWithdrawEnabled);
+                object precision = this.parseNumber(this.parsePrecision(this.safeString(rawNetwork, "withdrawPrecision")));
                 ((IDictionary<string,object>)networks)[(string)networkCode] = new Dictionary<string, object>() {
                     { "info", rawNetwork },
                     { "id", network },
                     { "network", networkCode },
-                    { "fee", fee },
-                    { "active", networkActive },
-                    { "deposit", networkDepositEnabled },
-                    { "withdraw", networkWithdrawEnabled },
+                    { "fee", this.safeNumber(rawNetwork, "withdrawFee") },
+                    { "active", null },
+                    { "deposit", this.safeBool(rawNetwork, "depositEnable") },
+                    { "withdraw", this.safeBool(rawNetwork, "withdrawEnable") },
                     { "precision", precision },
                     { "limits", limits },
                 };
             }
-            object active = isTrue(depositEnabled) || isTrue(withdrawEnabled);
             ((IDictionary<string,object>)result)[(string)code] = this.safeCurrencyStructure(new Dictionary<string, object>() {
                 { "info", entry },
                 { "code", code },
                 { "id", currencyId },
                 { "precision", null },
                 { "name", name },
-                { "active", active },
-                { "deposit", depositEnabled },
-                { "withdraw", withdrawEnabled },
+                { "active", null },
+                { "deposit", null },
+                { "withdraw", null },
                 { "networks", networks },
-                { "fee", fee },
-                { "limits", defaultLimits },
+                { "fee", null },
+                { "limits", null },
+                { "type", "crypto" },
             });
         }
         return result;
@@ -5443,11 +5422,7 @@ public partial class bingx : Exchange
         this.checkAddress(address);
         await this.loadMarkets();
         object currency = this.currency(code);
-        object walletType = this.safeInteger(parameters, "walletType");
-        if (isTrue(isEqual(walletType, null)))
-        {
-            walletType = 1;
-        }
+        object walletType = this.safeInteger(parameters, "walletType", 1);
         object request = new Dictionary<string, object>() {
             { "coin", getValue(currency, "id") },
             { "address", address },
