@@ -1,10 +1,106 @@
 {
-    "binance": {
-        "api": "https://api.binance.com",
-        "compliance_endpoint": "/compliance"
+  "binance": {
+    "api": "https://api.binance.com/v3",
+    "compliance_endpoint": "/api/v3/compliance",
+    "auth": {
+      "api_key": "${BINANCE_API_KEY}",
+      "secret_key": "${BINANCE_SECRET_KEY}"
     },
-    "coinbase": {
-        "api": "https://api.coinbase.com",
-        "compliance_endpoint": "/regulations"
+    "supported_chains": [
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0x1234567890abcdef1234567890abcdef12345678"
+      },
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xabcdef1234567890abcdef1234567890abcdef12"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": true
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+  "coinbase": {
+    "api": "https://api.coinbase.com/v2",
+    "compliance_endpoint": "/v2/regulations",
+    "auth": {
+      "api_key": "${COINBASE_API_KEY}",
+      "secret_key": "${COINBASE_SECRET_KEY}",
+      "oauth_token": "${COINBASE_OAUTH_TOKEN}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0x7890abcdef1234567890abcdef1234567890abcd"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["US", "EU"],
+      "zkp_required": false
+    },
+    "timeout_ms": 12000,
+    "retry_attempts": 2
+  },
+  "kraken": {
+    "api": "https://api.kraken.com/0",
+    "compliance_endpoint": "/0/private/compliance",
+    "auth": {
+      "api_key": "${KRAKEN_API_KEY}",
+      "secret_key": "${KRAKEN_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0x4567890abcdef1234567890abcdef1234567890"
+      },
+      {
+        "chain_id": 100,
+        "name": "Stellar",
+        "bridge_endpoint": "0x0abcdef1234567890abcdef1234567890abcdef1"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": true
+    },
+    "timeout_ms": 8000,
+    "retry_attempts": 3
+  },
+  "kucoin": {
+    "api": "https://api.kucoin.com/api/v1",
+    "compliance_endpoint": "/api/v1/regulatory",
+    "auth": {
+      "api_key": "${KUCOIN_API_KEY}",
+      "secret_key": "${KUCOIN_SECRET_KEY}",
+      "passphrase": "${KUCOIN_PASSPHRASE}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0x67890abcdef1234567890abcdef1234567890ab"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": false,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 2
+  }
     }
-}
