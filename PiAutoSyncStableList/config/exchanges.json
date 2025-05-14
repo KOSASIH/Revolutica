@@ -1,0 +1,10 @@
+{
+    "binance": {
+        "api": "https://api.binance.com",
+        "compliance_endpoint": "/compliance"
+    },
+    "coinbase": {
+        "api": "https://api.coinbase.com",
+        "compliance_endpoint": "/regulations"
+    }
+}
