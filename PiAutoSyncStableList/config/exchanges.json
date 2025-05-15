@@ -67,7 +67,7 @@
       {
         "chain_id": 100,
         "name": "Stellar",
-        "bridge_endpoint": "0x0abcdef1234567890abcdef1234567890abcdef1"
+        "bridge_endpoint": "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       }
     ],
     "compliance_requirements": {
@@ -232,7 +232,7 @@
       {
         "chain_id": 100,
         "name": "Stellar",
-        "bridge_endpoint": "0xa0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b"
+        "bridge_endpoint": "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       }
     ],
     "compliance_requirements": {
@@ -316,7 +316,7 @@
       {
         "chain_id": 100,
         "name": "Stellar",
-        "bridge_endpoint": "0xa6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b"
+        "bridge_endpoint": "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       }
     ],
     "compliance_requirements": {
@@ -457,7 +457,7 @@
       {
         "chain_id": 100,
         "name": "Stellar",
-        "bridge_endpoint": "0xe6f7a8b9c0d1e2f3a4b5c6d7e8f90123456789a"
+        "bridge_endpoint": "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       }
     ],
     "compliance_requirements": {
@@ -514,6 +514,165 @@
         "chain_id": 56,
         "name": "Binance Smart Chain",
         "bridge_endpoint": "0xc0d1e2f3a4b5c6d7e8f90123456789abcdef012"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
+  },
+  "bitstamp": {
+    "api": "https://www.bitstamp.net/api/v2",
+    "compliance_endpoint": "/api/v2/compliance",
+    "auth": {
+      "api_key": "${BITSTAMP_API_KEY}",
+      "secret_key": "${BITSTAMP_SECRET_KEY}",
+      "client_id": "${BITSTAMP_CLIENT_ID}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xd1e2f3a4b5c6d7e8f90123456789abcdef012345"
+      },
+      {
+        "chain_id": 100,
+        "name": "Stellar",
+        "bridge_endpoint": "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+  "upbit": {
+    "api": "https://api.upbit.com/v1",
+    "compliance_endpoint": "/v1/regulatory",
+    "auth": {
+      "api_key": "${UPBIT_API_KEY}",
+      "secret_key": "${UPBIT_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xe2f3a4b5c6d7e8f90123456789abcdef01234567"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["KR", "global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
+  },
+  "bithumb": {
+    "api": "https://api.bithumb.com/v1",
+    "compliance_endpoint": "/v1/compliance",
+    "auth": {
+      "api_key": "${BITHUMB_API_KEY}",
+      "secret_key": "${BITHUMB_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xf3a4b5c6d7e8f90123456789abcdef0123456789"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["KR", "global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
+  },
+  "exmo": {
+    "api": "https://api.exmo.com/v1.1",
+    "compliance_endpoint": "/v1.1/compliance",
+    "auth": {
+      "api_key": "${EXMO_API_KEY}",
+      "secret_key": "${EXMO_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xa4b5c6d7e8f90123456789abcdef0123456789ab"
+      },
+      {
+        "chain_id": 100,
+        "name": "Stellar",
+        "bridge_endpoint": "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+  "hitbtc": {
+    "api": "https://api.hitbtc.com/api/3",
+    "compliance_endpoint": "/api/3/compliance",
+    "auth": {
+      "api_key": "${HITBTC_API_KEY}",
+      "secret_key": "${HITBTC_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xb5c6d7e8f90123456789abcdef0123456789abcd"
+      },
+      {
+        "chain_id": 100,
+        "name": "Stellar",
+        "bridge_endpoint": "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
+  },
+  "p2pb2b": {
+    "api": "https://api.p2pb2b.io/api/v2",
+    "compliance_endpoint": "/api/v2/compliance",
+    "auth": {
+      "api_key": "${P2PB2B_API_KEY}",
+      "secret_key": "${P2PB2B_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xc6d7e8f90123456789abcdef0123456789abcdef"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0xd7e8f90123456789abcdef0123456789abcdef01"
       }
     ],
     "compliance_requirements": {
