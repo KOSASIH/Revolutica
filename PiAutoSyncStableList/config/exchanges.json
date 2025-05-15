@@ -102,5 +102,427 @@
     },
     "timeout_ms": 10000,
     "retry_attempts": 2
+  },
+  "bybit": {
+    "api": "https://api.bybit.com/v5",
+    "compliance_endpoint": "/v5/compliance",
+    "auth": {
+      "api_key": "${BYBIT_API_KEY}",
+      "secret_key": "${BYBIT_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+  "okx": {
+    "api": "https://www.okx.com/api/v5",
+    "compliance_endpoint": "/api/v5/regulatory",
+    "auth": {
+      "api_key": "${OKX_API_KEY}",
+      "secret_key": "${OKX_SECRET_KEY}",
+      "passphrase": "${OKX_PASSPHRASE}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0x3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2"
+      },
+      {
+        "chain_id": 66,
+        "name": "OKX Chain",
+        "bridge_endpoint": "0x4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": true
+    },
+    "timeout_ms": 9000,
+    "retry_attempts": 3
+  },
+  "gateio": {
+    "api": "https://api.gateio.ws/api/v4",
+    "compliance_endpoint": "/api/v4/compliance",
+    "auth": {
+      "api_key": "${GATEIO_API_KEY}",
+      "secret_key": "${GATEIO_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0x5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0x6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 11000,
+    "retry_attempts": 2
+  },
+  "huobi": {
+    "api": "https://api.huobi.pro/v1",
+    "compliance_endpoint": "/v1/compliance",
+    "auth": {
+      "api_key": "${HUOBI_API_KEY}",
+      "secret_key": "${HUOBI_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0x7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6"
+      },
+      {
+        "chain_id": 128,
+        "name": "Huobi ECO Chain",
+        "bridge_endpoint": "0x8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+  "bitfinex": {
+    "api": "https://api.bitfinex.com/v2",
+    "compliance_endpoint": "/v2/regulatory",
+    "auth": {
+      "api_key": "${BITFINEX_API_KEY}",
+      "secret_key": "${BITFINEX_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0x9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8"
+      },
+      {
+        "chain_id": 100,
+        "name": "Stellar",
+        "bridge_endpoint": "0xa0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": true
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
+  },
+  "cryptocom": {
+    "api": "https://api.crypto.com/v2",
+    "compliance_endpoint": "/v2/compliance",
+    "auth": {
+      "api_key": "${CRYPTOCOM_API_KEY}",
+      "secret_key": "${CRYPTOCOM_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xb1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c"
+      },
+      {
+        "chain_id": 25,
+        "name": "Cronos",
+        "bridge_endpoint": "0xc2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 2
+  },
+  "gemini": {
+    "api": "https://api.gemini.com/v1",
+    "compliance_endpoint": "/v1/regulatory",
+    "auth": {
+      "api_key": "${GEMINI_API_KEY}",
+      "secret_key": "${GEMINI_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xd3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e"
+      },
+      {
+        "chain_id": 137,
+        "name": "Polygon",
+        "bridge_endpoint": "0xe4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["US", "EU", "CA"],
+      "zkp_required": false
+    },
+    "timeout_ms": 11000,
+    "retry_attempts": 2
+  },
+  "bittrex": {
+    "api": "https://api.bittrex.com/v3",
+    "compliance_endpoint": "/v3/compliance",
+    "auth": {
+      "api_key": "${BITTREX_API_KEY}",
+      "secret_key": "${BITTREX_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xf5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a"
+      },
+      {
+        "chain_id": 100,
+        "name": "Stellar",
+        "bridge_endpoint": "0xa6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+  "mexc": {
+    "api": "https://api.mexc.com/api/v3",
+    "compliance_endpoint": "/api/v3/regulatory",
+    "auth": {
+      "api_key": "${MEXC_API_KEY}",
+      "secret_key": "${MEXC_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xb7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0xc8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
+  },
+  "bitget": {
+    "api": "https://api.bitget.com/api/v2",
+    "compliance_endpoint": "/api/v2/compliance",
+    "auth": {
+      "api_key": "${BITGET_API_KEY}",
+      "secret_key": "${BITGET_SECRET_KEY}",
+      "passphrase": "${BITGET_PASSPHRASE}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xd9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0xe0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+  "coinex": {
+    "api": "https://api.coinex.com/v1",
+    "compliance_endpoint": "/v1/regulatory",
+    "auth": {
+      "api_key": "${COINEX_API_KEY}",
+      "secret_key": "${COINEX_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xf1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f90"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0xa2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
+  },
+  "ascendex": {
+    "api": "https://api.ascendex.com/v1",
+    "compliance_endpoint": "/v1/compliance",
+    "auth": {
+      "api_key": "${ASCENDEX_API_KEY}",
+      "secret_key": "${ASCENDEX_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xb3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0xc4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f90123456"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 2
+  },
+  "poloniex": {
+    "api": "https://api.poloniex.com",
+    "compliance_endpoint": "/compliance",
+    "auth": {
+      "api_key": "${POLONIEX_API_KEY}",
+      "secret_key": "${POLONIEX_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xd5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012345678"
+      },
+      {
+        "chain_id": 100,
+        "name": "Stellar",
+        "bridge_endpoint": "0xe6f7a8b9c0d1e2f3a4b5c6d7e8f90123456789a"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
+  },
+  "lbank": {
+    "api": "https://api.lbank.info/v2",
+    "compliance_endpoint": "/v2/compliance",
+    "auth": {
+      "api_key": "${LBANK_API_KEY}",
+      "secret_key": "${LBANK_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xf7a8b9c0d1e2f3a4b5c6d7e8f90123456789abc"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0xa8b9c0d1e2f3a4b5c6d7e8f90123456789abcde"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+  "probit": {
+    "api": "https://api.probit.com/api/exchange/v1",
+    "compliance_endpoint": "/api/exchange/v1/compliance",
+    "auth": {
+      "api_key": "${PROBIT_API_KEY}",
+      "secret_key": "${PROBIT_SECRET_KEY}"
+    },
+    "supported_chains": [
+      {
+        "chain_id": 1,
+        "name": "Ethereum",
+        "bridge_endpoint": "0xb9c0d1e2f3a4b5c6d7e8f90123456789abcdef0"
+      },
+      {
+        "chain_id": 56,
+        "name": "Binance Smart Chain",
+        "bridge_endpoint": "0xc0d1e2f3a4b5c6d7e8f90123456789abcdef012"
+      }
+    ],
+    "compliance_requirements": {
+      "kyc": true,
+      "aml": true,
+      "region": ["global"],
+      "zkp_required": false
+    },
+    "timeout_ms": 9500,
+    "retry_attempts": 3
   }
     }
